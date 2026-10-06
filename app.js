@@ -2,6 +2,7 @@ const $ = (id) => document.getElementById(id);
 const round = (n, d=2) => Number(n.toFixed(d));
 const money = n => new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:2}).format(n);
 const rand = (min,max,step=1) => Math.round((min + Math.random()*(max-min))/step)*step;
+const REMOTE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwWkHyKG683iAiO1n6PF8sqAEEprt1R5Qa3F0cNak0exkLzEeeuCSW_JBDmqG6PMw2s/exec';
 
 const UNITS = [
   {
@@ -169,7 +170,7 @@ async function confirmTeacherLogin(){
 function showTeacher(){
   if(sessionStorage.getItem('math38976_teacher_auth')!=='1'){openTeacherLogin();return;}
   switchView('teacherView'); renderResultsTable();
-  $('endpointInput').value=localStorage.getItem('math38976_endpoint')||'';
+  $('endpointInput').value=REMOTE_ENDPOINT;
 }
 function logoutStudent(){
   if(!state.student){switchView('loginView');return;}
@@ -191,10 +192,9 @@ function exportCSV(){
 }
 function csvCell(v){const s=String(v??'');return '"'+s.replaceAll('"','""')+'"';}
 function clearData(){if(confirm('¿Borrar todos los resultados guardados en este navegador?')){state.history=[];saveHistory();renderResultsTable();}}
-function saveEndpoint(){localStorage.setItem('math38976_endpoint',$('endpointInput').value.trim());alert('URL guardada.');}
+function saveEndpoint(){alert('La conexión con Google Sheets ya está configurada.');}
 async function sendRemote(record){
-  const url=localStorage.getItem('math38976_endpoint');if(!url)return;
-  try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(record)});}catch(e){console.warn('No fue posible enviar el registro remoto',e);}
+  try{await fetch(REMOTE_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(record)});}catch(e){console.warn('No fue posible enviar el registro remoto',e);}
 }
 function labelMode(m){return m==='graded'?'Actividad':m==='exam'?'Examen':'Práctica';}
 function roman(n){return ['','I','II','III','IV'][n];}
