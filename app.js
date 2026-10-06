@@ -50,6 +50,7 @@ function loadStudent(){
 function switchView(id){
   ['loginView','dashboardView','practiceView','teacherView'].forEach(v=>$(v).classList.add('hidden'));
   $(id).classList.remove('hidden');
+  $('logoutBtn').classList.toggle('hidden', !(id==='dashboardView' || id==='practiceView'));
 }
 function startStudent(){
   const name=$('studentName').value.trim(), id=$('studentId').value.trim(), group=$('studentGroup').value.trim();
@@ -154,9 +155,29 @@ function setMode(mode){
   state.mode=mode;document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
   if(state.unit){state.index=0;state.correct=0;buildSession();renderExercise();}
 }
+const TEACHER_HASH='21179c412fe576b78850dccde08993380422b24c0ebf5d03e7b6eed558122f3f';
+async function hashText(text){const data=new TextEncoder().encode(text);const hash=await crypto.subtle.digest('SHA-256',data);return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');}
+function openTeacherLogin(){
+  if(sessionStorage.getItem('math38976_teacher_auth')==='1'){showTeacher();return;}
+  $('teacherPin').value='';$('teacherPinError').classList.add('hidden');$('teacherLoginModal').classList.remove('hidden');setTimeout(()=>$('teacherPin').focus(),50);
+}
+async function confirmTeacherLogin(){
+  const ok=(await hashText($('teacherPin').value))===TEACHER_HASH;
+  if(!ok){$('teacherPinError').classList.remove('hidden');return;}
+  sessionStorage.setItem('math38976_teacher_auth','1');$('teacherLoginModal').classList.add('hidden');showTeacher();
+}
 function showTeacher(){
+  if(sessionStorage.getItem('math38976_teacher_auth')!=='1'){openTeacherLogin();return;}
   switchView('teacherView'); renderResultsTable();
   $('endpointInput').value=localStorage.getItem('math38976_endpoint')||'';
+}
+function logoutStudent(){
+  if(!state.student){switchView('loginView');return;}
+  if(state.unit && !$('practiceView').classList.contains('hidden') && !confirm('¿Salir de la sesión? El ejercicio actual no se guardará.')) return;
+  state.student=null;state.unit=null;state.session=[];state.index=0;state.correct=0;state.checked=false;
+  localStorage.removeItem('math38976_student');
+  $('studentName').value='';$('studentId').value='';$('studentGroup').value='';
+  switchView('loginView');
 }
 function renderResultsTable(){
   const rows=[...state.history].reverse();
@@ -289,7 +310,11 @@ function inputOutput(){
 // Eventos
 $('startBtn').addEventListener('click',startStudent);
 $('backBtn').addEventListener('click',renderDashboard);
-$('teacherBtn').addEventListener('click',showTeacher);
+$('teacherBtn').addEventListener('click',openTeacherLogin);
+$('logoutBtn').addEventListener('click',logoutStudent);
+$('cancelTeacherLogin').addEventListener('click',()=>$('teacherLoginModal').classList.add('hidden'));
+$('confirmTeacherLogin').addEventListener('click',confirmTeacherLogin);
+$('teacherPin').addEventListener('keydown',e=>{if(e.key==='Enter')confirmTeacherLogin();});
 $('teacherBackBtn').addEventListener('click',()=>state.student?renderDashboard():switchView('loginView'));
 $('checkBtn').addEventListener('click',checkExercise);
 $('nextBtn').addEventListener('click',nextExercise);
