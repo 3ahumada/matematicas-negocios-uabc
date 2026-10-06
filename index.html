@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Plataforma de práctica de Matemáticas 38976 con aplicaciones empresariales." />
+  <title>Matemáticas para Negocios · UABC</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">∑</div>
+      <div>
+        <strong>Matemáticas para Negocios</strong>
+        <span>Unidad de aprendizaje 38976 · Tronco común</span>
+      </div>
+    </div>
+    <button id="teacherBtn" class="ghost-btn">Panel docente</button>
+  </header>
+
+  <main class="shell">
+    <section id="loginView" class="card login-card">
+      <div class="eyebrow">PLATAFORMA DE PRÁCTICA</div>
+      <h1>Matemáticas aplicadas a decisiones empresariales</h1>
+      <p class="lede">Practica funciones lineales, cuadráticas, exponenciales, logarítmicas y matrices con casos de costos, ventas, inversión, crecimiento y toma de decisiones.</p>
+
+      <div class="grid-3">
+        <label>Nombre completo
+          <input id="studentName" type="text" placeholder="Ej. Ana Pérez" autocomplete="name" />
+        </label>
+        <label>Matrícula
+          <input id="studentId" type="text" placeholder="Ej. 1234567" />
+        </label>
+        <label>Grupo
+          <input id="studentGroup" type="text" placeholder="Ej. 101" />
+        </label>
+      </div>
+      <button id="startBtn" class="primary-btn wide">Entrar a mi panel</button>
+      <p class="micro">Los avances se guardan en este dispositivo. Si la docente configura el registro en Google Sheets, también se enviarán automáticamente.</p>
+    </section>
+
+    <section id="dashboardView" class="hidden">
+      <div class="hero-row">
+        <div>
+          <div class="eyebrow">MI PROGRESO</div>
+          <h1 id="welcomeTitle">Hola</h1>
+          <p id="studentMeta" class="muted"></p>
+        </div>
+        <div class="score-pill">
+          <span>Promedio</span>
+          <strong id="overallScore">—</strong>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card"><span>Actividades</span><strong id="doneCount">0</strong></article>
+        <article class="stat-card"><span>Aciertos</span><strong id="accuracy">0%</strong></article>
+        <article class="stat-card"><span>Temas dominados</span><strong id="masteredCount">0</strong></article>
+        <article class="stat-card"><span>Intentos</span><strong id="attemptCount">0</strong></article>
+      </div>
+
+      <section class="section-block">
+        <div class="section-title">
+          <div>
+            <div class="eyebrow">RUTA DE APRENDIZAJE</div>
+            <h2>Elige una unidad</h2>
+          </div>
+        </div>
+        <div id="unitGrid" class="unit-grid"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-title">
+          <div>
+            <div class="eyebrow">RESULTADOS</div>
+            <h2>Tu desempeño por unidad</h2>
+          </div>
+        </div>
+        <div class="chart-card"><canvas id="progressChart"></canvas></div>
+      </section>
+    </section>
+
+    <section id="practiceView" class="hidden">
+      <div class="practice-head">
+        <button id="backBtn" class="ghost-btn">← Volver</button>
+        <div>
+          <div id="unitEyebrow" class="eyebrow"></div>
+          <h1 id="practiceTitle"></h1>
+          <p id="practiceSubtitle" class="muted"></p>
+        </div>
+        <div class="score-pill small">
+          <span>Puntaje</span>
+          <strong id="sessionScore">0/0</strong>
+        </div>
+      </div>
+
+      <div class="mode-switch">
+        <button class="mode active" data-mode="practice">Práctica</button>
+        <button class="mode" data-mode="graded">Actividad calificable</button>
+        <button class="mode" data-mode="exam">Examen</button>
+      </div>
+
+      <article class="exercise-card">
+        <div class="exercise-topline">
+          <span id="topicBadge" class="badge"></span>
+          <span id="difficultyBadge" class="badge neutral"></span>
+        </div>
+        <h2 id="exercisePrompt"></h2>
+        <div id="exerciseContext" class="case-box"></div>
+        <div id="exerciseInputs" class="answer-area"></div>
+        <div class="exercise-actions">
+          <button id="checkBtn" class="primary-btn">Revisar respuesta</button>
+          <button id="hintBtn" class="ghost-btn">Ver pista</button>
+          <button id="nextBtn" class="ghost-btn hidden">Siguiente ejercicio →</button>
+        </div>
+        <div id="feedbackBox" class="feedback hidden"></div>
+        <div id="hintBox" class="hint hidden"></div>
+      </article>
+
+      <aside class="session-strip">
+        <span id="exerciseCounter">Ejercicio 1</span>
+        <div class="progress-track"><div id="sessionProgress" class="progress-fill"></div></div>
+        <button id="finishBtn" class="ghost-btn">Terminar sesión</button>
+      </aside>
+    </section>
+
+    <section id="teacherView" class="hidden">
+      <div class="practice-head">
+        <button id="teacherBackBtn" class="ghost-btn">← Volver</button>
+        <div>
+          <div class="eyebrow">CONTROL DOCENTE</div>
+          <h1>Resultados guardados en este navegador</h1>
+          <p class="muted">Exporta el registro a CSV para abrirlo en Excel o conecta Google Sheets desde Apps Script.</p>
+        </div>
+      </div>
+
+      <div class="teacher-actions">
+        <button id="exportBtn" class="primary-btn">Exportar CSV para Excel</button>
+        <button id="clearBtn" class="danger-btn">Borrar datos locales</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th><th>Matrícula</th><th>Alumno</th><th>Grupo</th><th>Unidad</th><th>Tema</th><th>Modo</th><th>Aciertos</th><th>Total</th><th>Calificación</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
+      <div class="config-card">
+        <h3>Conexión con Google Sheets</h3>
+        <p>Cuando publiques el archivo <code>apps-script/Code.gs</code> como Web App, pega aquí la URL. Quedará guardada en este navegador.</p>
+        <div class="inline-form">
+          <input id="endpointInput" type="url" placeholder="https://script.google.com/macros/s/…/exec" />
+          <button id="saveEndpointBtn" class="ghost-btn">Guardar URL</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Matemáticas 38976 · Aplicaciones empresariales</span>
+    <span>Diseñado para aprendizaje activo y seguimiento de evidencias</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
