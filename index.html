@@ -18,7 +18,7 @@
         <span>Unidad de aprendizaje 38976 · Tronco común</span>
       </div>
     </div>
-    <button id="teacherBtn" class="ghost-btn">Panel docente</button>
+    <div class="top-actions"><button id="logoutBtn" class="ghost-btn hidden">Cerrar sesión</button><button id="teacherBtn" class="ghost-btn">Acceso docente</button></div>
   </header>
 
   <main class="shell">
@@ -161,7 +161,22 @@
         </div>
       </div>
     </section>
-  </main>
+    <div id="teacherLoginModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="eyebrow">ACCESO RESTRINGIDO</div>
+      <h2>Panel docente</h2>
+      <p class="muted">Ingresa la clave docente para consultar o exportar resultados.</p>
+      <label>Clave docente
+        <input id="teacherPin" type="password" autocomplete="off" placeholder="Clave docente" />
+      </label>
+      <p id="teacherPinError" class="pin-error hidden">Clave incorrecta.</p>
+      <div class="modal-actions">
+        <button id="cancelTeacherLogin" class="ghost-btn">Cancelar</button>
+        <button id="confirmTeacherLogin" class="primary-btn">Entrar</button>
+      </div>
+    </div>
+  </div>
+</main>
 
   <footer>
     <span>Matemáticas 38976 · Aplicaciones empresariales</span>
