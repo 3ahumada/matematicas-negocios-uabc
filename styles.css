@@ -40,3 +40,11 @@ input{width:100%;margin-top:8px;padding:13px 14px;border:1px solid #cfd9d4;borde
 .teacher-actions{display:flex;gap:10px;margin:24px 0}.table-wrap{overflow:auto;background:white;border:1px solid var(--line);border-radius:16px}table{width:100%;border-collapse:collapse;min-width:980px}th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:.84rem}th{background:#f0f4f1;color:#415049}.config-card{padding:22px;margin-top:20px}.inline-form{display:flex;gap:10px}.inline-form input{margin:0}
 footer{display:flex;justify-content:space-between;gap:20px;padding:24px 5vw;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem}
 @media(max-width:780px){.grid-3,.stats-grid,.unit-grid{grid-template-columns:1fr}.hero-row,.practice-head{flex-direction:column}.score-pill{width:100%}.answer-row{grid-template-columns:1fr}.inline-form{flex-direction:column}.topbar{align-items:flex-start}.brand span{display:none}footer{flex-direction:column}}
+
+.top-actions{display:flex;gap:10px;align-items:center}
+.modal{position:fixed;inset:0;background:rgba(13,24,19,.55);display:grid;place-items:center;padding:20px;z-index:100}
+.modal-card{width:min(430px,100%);background:white;border-radius:20px;padding:26px;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.2)}
+.modal-card h2{margin:.35rem 0 .5rem;font-size:1.8rem}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.pin-error{color:var(--danger);font-weight:700;font-size:.86rem;margin:10px 0 0}
+@media(max-width:600px){.top-actions{gap:6px}.top-actions .ghost-btn{padding:9px 10px;font-size:.78rem}}
